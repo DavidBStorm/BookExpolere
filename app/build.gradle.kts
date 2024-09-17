@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.dagger.hilt.android)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -45,4 +47,16 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation (libs.androidx.lifecycle.livedata.ktx)
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+
+            // Retrofit
+    implementation (libs.squareup.retrofit2)
+    implementation (libs.squareup.retrofit2.converter.gson)
+
+            // hilt
+    implementation (libs.dagger.hilt.android)
+    kapt (libs.dagger.hilt.compiler)
+
 }
