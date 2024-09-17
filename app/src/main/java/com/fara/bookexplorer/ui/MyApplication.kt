@@ -1,8 +1,6 @@
-package com.fara.bookexplorer
+package com.fara.bookexplorer.ui
 
 import android.app.Application
-import android.util.Log
-import androidx.appcompat.app.AppCompatDelegate
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp

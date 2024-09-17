@@ -1,4 +1,4 @@
-package com.fara.bookexplorer
+package com.fara.bookexplorer.ui
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
