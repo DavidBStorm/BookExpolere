@@ -2,7 +2,8 @@ package com.fara.bookexplorer.di
 
 import android.app.Application
 import android.content.Context
-import com.fara.bookexplorer.data.repository.MediaRepository
+import com.fara.bookexplorer.data.holder.BookService
+import com.fara.bookexplorer.data.repository.BookRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,5 +18,5 @@ object AppModules {
 
 //add your dependencies here
 @Provides
-fun provideMediaRepository(application: Application): MediaRepository = MediaRepository(application)
+fun provideMediaRepository(bookService: BookService): BookRepository = BookRepository(bookService)
 }
