@@ -1,7 +1,7 @@
 package com.fara.bookexplorer.di
 
 import android.content.Context
-import com.fara.bookexplorer.data.holder.BookService
+import com.fara.bookexplorer.data.services.BookService
 import com.fara.bookexplorer.ui.MyApplication
 import dagger.Module
 import dagger.Provides

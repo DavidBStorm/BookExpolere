@@ -1,6 +1,6 @@
 package com.fara.bookexplorer.data.repository
 
-import com.fara.bookexplorer.data.holder.BookService
+import com.fara.bookexplorer.data.services.BookService
 import com.fara.bookexplorer.domain.model.Book
 
 
