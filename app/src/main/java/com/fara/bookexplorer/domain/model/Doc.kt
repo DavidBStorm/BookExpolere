@@ -1,8 +1,11 @@
 package com.fara.bookexplorer.domain.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Doc(
     @SerializedName("author_alternative_name")
     val authorAlternativeName: List<String> = listOf(),
@@ -60,7 +63,7 @@ data class Doc(
     val type: String = "",
     @SerializedName("_version_")
     val version: Long = 0
-){
+) : Parcelable {
     fun getFirstLanguage(): String = language.firstOrNull() ?: ""
 
     // Get the first publisher or return an empty string if the list is empty

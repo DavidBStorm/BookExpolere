@@ -26,11 +26,11 @@ class MainViewModel @Inject constructor(
     private val searchBooksUseCase: SearchBooksUseCase
 ) : ViewModel() {
 
-    // To hold UI state
+
     private val _uiState = MutableStateFlow<MainUIState>(MainUIState.Idle)
     val uiState: StateFlow<MainUIState> = _uiState
 
-    // Intent processing function
+
     fun processIntent(intent: MainIntent) {
         when (intent) {
             is MainIntent.Search -> handleSearch(intent.query)
@@ -38,7 +38,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    // Handle search intent
+
     private fun handleSearch(query: String) {
         viewModelScope.launch {
             _uiState.value = MainUIState.Loading
