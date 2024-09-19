@@ -1,4 +1,4 @@
-package com.fara.bookexplorer.ui.base
+package com.fara.bookexplorer.presentation.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

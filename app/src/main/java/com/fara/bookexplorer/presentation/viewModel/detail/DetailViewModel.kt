@@ -1,15 +1,13 @@
-package com.fara.bookexplorer.viewModel.detail
+package com.fara.bookexplorer.presentation.viewModel.detail
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.fara.bookexplorer.data.repository.BookRepository
 import com.fara.bookexplorer.domain.model.Doc
-import com.fara.bookexplorer.ui.state.DetailIntent
-import com.fara.bookexplorer.ui.state.DetailState
+import com.fara.bookexplorer.presentation.state.DetailIntent
+import com.fara.bookexplorer.presentation.state.DetailState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 

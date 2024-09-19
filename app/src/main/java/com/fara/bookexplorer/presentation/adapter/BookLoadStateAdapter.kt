@@ -1,4 +1,4 @@
-package com.fara.bookexplorer.ui.adapter
+package com.fara.bookexplorer.presentation.adapter
 
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter

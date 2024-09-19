@@ -1,8 +1,7 @@
-package com.fara.bookexplorer.ui.fragments.detail
+package com.fara.bookexplorer.presentation.fragments.detail
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.fara.bookexplorer.domain.model.Doc
-import com.fara.bookexplorer.ui.base.BaseFragment
-import com.fara.bookexplorer.ui.state.DetailIntent
-import com.fara.bookexplorer.ui.state.DetailState
-import com.fara.bookexplorer.viewModel.detail.DetailViewModel
-import com.fara.bookexplorer.viewModel.main.MainViewModel
+import com.fara.bookexplorer.presentation.base.BaseFragment
+import com.fara.bookexplorer.presentation.state.DetailIntent
+import com.fara.bookexplorer.presentation.state.DetailState
+import com.fara.bookexplorer.presentation.viewModel.detail.DetailViewModel
 import com.fara.bookexpolorer.R
 import com.fara.bookexpolorer.databinding.FragmentDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 @AndroidEntryPoint
 class DetailsFragment : BaseFragment<FragmentDetailsBinding>() {

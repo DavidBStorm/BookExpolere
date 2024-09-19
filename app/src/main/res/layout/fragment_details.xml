@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.fara.bookexplorer.viewModel.main.MainViewModel" /> <!-- Replace with your actual ViewModel class -->
+            type="com.fara.bookexplorer.presentation.viewModel.main.MainViewModel" /> <!-- Replace with your actual ViewModel class -->
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,6 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title:"
+            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bookCoverImage" />
 
@@ -31,9 +32,9 @@
             android:id="@+id/bookAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Author:"
             android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
+            android:text="Author:"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bookTitle" />
 
         <!-- Book Year -->

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.fara.bookexplorer.viewModel.main.MainViewModel" /> <!-- Replace with your actual ViewModel class -->
+            type="com.fara.bookexplorer.presentation.viewModel.main.MainViewModel" /> <!-- Replace with your actual ViewModel class -->
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

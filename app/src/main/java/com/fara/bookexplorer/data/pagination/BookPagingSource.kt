@@ -1,4 +1,4 @@
-package com.fara.bookexplorer.ui.pagination
+package com.fara.bookexplorer.data.pagination
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -13,7 +13,7 @@ class BookPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Doc> {
         return try {
             val page = params.key ?: PAGE_ONE
-            val response = bookService.searchBooks(query, page,LIMIT)
+            val response = bookService.searchBooks(query, page, LIMIT)
 
             if (response.isSuccessful) {
                 val books = response.body()?.docs ?: emptyList()

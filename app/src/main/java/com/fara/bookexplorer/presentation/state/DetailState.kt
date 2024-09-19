@@ -1,4 +1,4 @@
-package com.fara.bookexplorer.ui.state
+package com.fara.bookexplorer.presentation.state
 
 import com.fara.bookexplorer.domain.model.Doc
 

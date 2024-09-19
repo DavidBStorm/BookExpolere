@@ -2,12 +2,12 @@ package com.fara.bookexplorer.data.repository
 
 import com.fara.bookexplorer.data.services.BookService
 import com.fara.bookexplorer.domain.model.BookResponse
-import com.fara.bookexplorer.ui.pagination.BookPagingSource.Companion.LIMIT
+import com.fara.bookexplorer.data.pagination.BookPagingSource.Companion.LIMIT
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.fara.bookexplorer.domain.model.Doc
-import com.fara.bookexplorer.ui.pagination.BookPagingSource
+import com.fara.bookexplorer.data.pagination.BookPagingSource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

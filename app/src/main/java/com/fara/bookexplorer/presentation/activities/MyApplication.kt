@@ -1,4 +1,4 @@
-package com.fara.bookexplorer.ui
+package com.fara.bookexplorer.presentation.activities
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

@@ -1,4 +1,4 @@
-package com.fara.bookexplorer.ui.fragments.main
+package com.fara.bookexplorer.presentation.fragments.main
 
 import android.content.Context
 import android.os.Bundle
@@ -12,13 +12,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.fara.bookexplorer.ui.adapter.BookAdapter
-import com.fara.bookexplorer.ui.adapter.BookLoadStateAdapter
-import com.fara.bookexplorer.ui.base.BaseFragment
-import com.fara.bookexplorer.ui.fragments.detail.DetailsFragment
-import com.fara.bookexplorer.ui.state.MainIntent
-import com.fara.bookexplorer.ui.state.MainUIState
-import com.fara.bookexplorer.viewModel.main.MainViewModel
+import com.fara.bookexplorer.presentation.adapter.BookAdapter
+import com.fara.bookexplorer.presentation.adapter.BookLoadStateAdapter
+import com.fara.bookexplorer.presentation.base.BaseFragment
+import com.fara.bookexplorer.presentation.fragments.detail.DetailsFragment
+import com.fara.bookexplorer.presentation.state.MainIntent
+import com.fara.bookexplorer.presentation.state.MainUIState
+import com.fara.bookexplorer.presentation.viewModel.main.MainViewModel
 import com.fara.bookexpolorer.R
 import com.fara.bookexpolorer.databinding.FragmentMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -151,6 +151,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         builder.setView(dialogView)
 
         progressDialog = builder.create()
+        progressDialog.setCancelable(false)
         progressDialog.show()
     }
 

@@ -1,7 +1,6 @@
-package com.fara.bookexplorer.ui.state
+package com.fara.bookexplorer.presentation.state
 
 import androidx.paging.PagingData
-import com.fara.bookexplorer.domain.model.BookResponse
 import com.fara.bookexplorer.domain.model.Doc
 
 sealed class MainUIState {

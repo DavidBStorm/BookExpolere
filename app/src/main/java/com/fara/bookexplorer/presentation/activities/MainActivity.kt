@@ -1,11 +1,11 @@
-package com.fara.bookexplorer.ui
+package com.fara.bookexplorer.presentation.activities
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.fara.bookexplorer.ui.fragments.main.MainFragment
+import com.fara.bookexplorer.presentation.fragments.main.MainFragment
 import com.fara.bookexpolorer.R
 import dagger.hilt.android.AndroidEntryPoint
 
