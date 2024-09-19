@@ -127,7 +127,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-//                newText?.let { viewModel.processIntent(MainIntent.Search(it)) }
+
+                newText?.let { viewModel.onQueryTextChanged(it) }
                 updateEmptyQueryMessage(newText ?: "")
                 return true
             }
