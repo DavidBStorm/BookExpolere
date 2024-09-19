@@ -7,25 +7,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fara.bookexplorer.ui.adapter.BookAdapter
+import com.fara.bookexplorer.ui.adapter.BookLoadStateAdapter
 import com.fara.bookexplorer.ui.base.BaseFragment
+import com.fara.bookexplorer.ui.state.MainIntent
 import com.fara.bookexplorer.ui.state.MainUIState
 import com.fara.bookexplorer.viewModel.main.MainViewModel
 import com.fara.bookexpolorer.R
 import com.fara.bookexpolorer.databinding.FragmentMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainFragment : BaseFragment<FragmentMainBinding>() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var bookAdapter: BookAdapter
+    private lateinit var progressDialog: AlertDialog
+
 
     override fun inflateBinding(
         inflater: LayoutInflater,
@@ -42,71 +50,80 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             // Handle book click, e.g., navigate to DetailFragment
         }
 
-        // Setup RecyclerView
         binding.recyclerView.apply {
-            adapter = bookAdapter
             layoutManager = LinearLayoutManager(context)
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    val visibleItemCount = layoutManager.childCount
-                    val totalItemCount = layoutManager.itemCount
-                    val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
-
-                    if (!viewModel.isLoading && !viewModel.isLastPage) {
-                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount) {
-                            // User has scrolled to the bottom of the list
-                            Log.e("TAG", "onScrolled: load more" )
-                            viewModel.loadMoreBooks()
-                        }
-                    }
-                }
-            })
+            adapter = bookAdapter.withLoadStateFooter(
+                footer = BookLoadStateAdapter { bookAdapter.retry() }
+            )
         }
 
         // Observe ViewModel state
         lifecycleScope.launchWhenStarted {
             viewModel.uiState.collect { state ->
                 when (state) {
-                    is MainUIState.Loading -> {
-                        Log.e("eee", "onViewCreated: on progress")
-                        binding.progressBar.visibility = View.VISIBLE
-                    }
+                    is MainUIState.Loading -> showProgressDialog()
                     is MainUIState.Success -> {
-                        val books = state.books
-                        bookAdapter.submitBookList(books?.docs.orEmpty())
-                        Log.e("eee", "onViewCreated: on success ${books?.numFound}")
+                        dismissProgressDialog()
+                        bookAdapter.submitData(lifecycle, state.books)
                     }
                     is MainUIState.Error -> {
-                        // Show error message
+                        dismissProgressDialog()
                         Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
                     }
                     MainUIState.Idle -> {
-                        Log.e("eee", "onViewCreated: on idle")
-                        // Initial state, no action required
+                        // No action needed
                     }
                 }
             }
         }
 
+        lifecycleScope.launchWhenStarted {
+            bookAdapter.loadStateFlow.collect { loadStates ->
+                when (loadStates.refresh) {
+                    is LoadState.Loading -> showProgressDialog()
+                    is LoadState.NotLoading -> dismissProgressDialog()
+                    is LoadState.Error -> {
+                        dismissProgressDialog()
+                        val error = (loadStates.refresh as LoadState.Error).error
+                        Toast.makeText(requireContext(), error.localizedMessage, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+
         // Setup SearchView
         binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let {
-                    viewModel.onQueryChanged(it)
-                }
+                query?.let { viewModel.processIntent(MainIntent.Search(it)) }
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let {
-                    viewModel.onQueryChanged(it)
-                }
+                newText?.let { viewModel.processIntent(MainIntent.Search(it)) }
                 return true
             }
         })
+
     }
+
+
+    private fun showProgressDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.dialog_progress, null)
+        builder.setView(dialogView)
+
+        progressDialog = builder.create()
+        progressDialog.show()
+    }
+
+    private fun dismissProgressDialog() {
+        if (::progressDialog.isInitialized) {
+            progressDialog.dismiss()
+        }
+    }
+
 
     companion object {
         @JvmStatic
