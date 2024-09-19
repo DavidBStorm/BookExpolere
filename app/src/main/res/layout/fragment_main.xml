@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <!-- Declare any variables or ViewModel bindings here if needed -->
         <variable
             name="viewModel"
             type="com.fara.bookexplorer.viewModel.main.MainViewModel" /> <!-- Replace with your actual ViewModel class -->
@@ -24,16 +23,43 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scrollbars="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/no_books_message"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_view" />
+
+        <TextView
+            android:id="@+id/no_books_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No books found."
+            android:visibility="gone"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recycler_view"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/empty_query_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please enter something."
+            android:visibility="visible"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@id/recycler_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_view"
+            android:gravity="center" />
 
         <ProgressBar
             android:id="@+id/progressBar"

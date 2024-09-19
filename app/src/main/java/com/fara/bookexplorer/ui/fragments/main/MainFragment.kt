@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fara.bookexplorer.ui.adapter.BookAdapter
@@ -60,18 +61,22 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         // Observe ViewModel state
         lifecycleScope.launchWhenStarted {
             viewModel.uiState.collect { state ->
+
                 when (state) {
                     is MainUIState.Loading -> showProgressDialog()
                     is MainUIState.Success -> {
                         dismissProgressDialog()
                         bookAdapter.submitData(lifecycle, state.books)
+
                     }
                     is MainUIState.Error -> {
                         dismissProgressDialog()
                         Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
                     }
                     MainUIState.Idle -> {
-                        // No action needed
+                        dismissProgressDialog()
+                        // Update based on query state
+
                     }
                 }
             }
@@ -81,7 +86,11 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             bookAdapter.loadStateFlow.collect { loadStates ->
                 when (loadStates.refresh) {
                     is LoadState.Loading -> showProgressDialog()
-                    is LoadState.NotLoading -> dismissProgressDialog()
+                    is LoadState.NotLoading -> {
+                        dismissProgressDialog()
+                        updateNoBooksMessage(bookAdapter.itemCount == 0)
+                    }
+
                     is LoadState.Error -> {
                         dismissProgressDialog()
                         val error = (loadStates.refresh as LoadState.Error).error
@@ -100,13 +109,21 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let { viewModel.processIntent(MainIntent.Search(it)) }
+//                newText?.let { viewModel.processIntent(MainIntent.Search(it)) }
+                updateEmptyQueryMessage(newText?:"")
                 return true
             }
         })
 
     }
 
+    private fun updateNoBooksMessage(noBooks: Boolean) {
+        binding.noBooksMessage.visibility = if (noBooks) View.VISIBLE else View.GONE
+    }
+
+    private fun updateEmptyQueryMessage(query: String) {
+        binding.emptyQueryMessage.visibility = if (query.isEmpty()) View.VISIBLE else View.GONE
+    }
 
     private fun showProgressDialog() {
         val builder = AlertDialog.Builder(requireContext())
