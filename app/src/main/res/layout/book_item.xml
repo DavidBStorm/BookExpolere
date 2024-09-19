@@ -1,28 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <!-- Declare any variables or ViewModel bindings here if needed -->
         <variable
-            name="viewModel"
-            type="com.fara.bookexplorer.viewModel.main.MainViewModel" /> <!-- Replace with your actual ViewModel class -->
+            name="book"
+            type="com.fara.bookexplorer.domain.model.Doc" /> <!-- Replace with your a`ctual Book model class -->
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:padding="16dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
 
-        <TextView
-            android:id="@+id/book_title"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:text="ass hholee"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/book_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{book.title}"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/author_name" />
+
+            <TextView
+                android:id="@+id/author_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{`Author: ` + book.getFirstAuthor()}"
+                app:layout_constraintTop_toBottomOf="@id/book_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/languages" />
+
+            <TextView
+                android:id="@+id/languages"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{`Languages: ` + book.getFirstLanguage()}"
+                app:layout_constraintTop_toBottomOf="@id/author_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/publish_year" />
+
+            <TextView
+                android:id="@+id/publish_year"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{`Published Year: ` + book.getFirstPublishYear()}"
+                app:layout_constraintTop_toBottomOf="@id/languages"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/book_publisher" />
+
+            <TextView
+                android:id="@+id/book_publisher"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{`Publisher: ` + book.getFirstPublishYearV2()}"
+                app:layout_constraintTop_toBottomOf="@id/publish_year"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 </layout>

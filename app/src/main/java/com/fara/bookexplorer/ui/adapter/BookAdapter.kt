@@ -35,7 +35,7 @@ class BookAdapter(private val onClick: (Doc) -> Unit) : PagingDataAdapter<Doc, B
 
     inner class BookViewHolder(private val binding: BookItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(book: Doc) {
-            binding.bookTitle.text = book.title
+            binding.book = book
             binding.root.setOnClickListener { onClick(book) }
         }
     }

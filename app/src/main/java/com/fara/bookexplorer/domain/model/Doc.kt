@@ -60,4 +60,15 @@ data class Doc(
     val type: String = "",
     @SerializedName("_version_")
     val version: Long = 0
-)
+){
+    fun getFirstLanguage(): String = language.firstOrNull() ?: ""
+
+    // Get the first publisher or return an empty string if the list is empty
+    fun getFirstPublisher(): String = publisher.firstOrNull() ?: ""
+
+    // Get the first author or return an empty string if the list is empty
+    fun getFirstAuthor(): String = authorName.firstOrNull() ?: ""
+
+    // Get the first publish year or return a default value if the list is empty
+    fun getFirstPublishYearV2(): String = firstPublishYear.toString()
+}
