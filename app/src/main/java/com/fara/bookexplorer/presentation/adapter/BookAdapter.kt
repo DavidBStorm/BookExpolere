@@ -14,11 +14,11 @@ class BookAdapter(private val onClick: (Doc) -> Unit) : PagingDataAdapter<Doc, B
 
     class BookDiffCallback : DiffUtil.ItemCallback<Doc>() {
         override fun areItemsTheSame(oldItem: Doc, newItem: Doc): Boolean {
-            return oldItem.key == newItem.key // Unique book identifier
+            return oldItem.key == newItem.key
         }
 
         override fun areContentsTheSame(oldItem: Doc, newItem: Doc): Boolean {
-            return oldItem == newItem // Compare content
+            return oldItem == newItem
         }
     }
 
@@ -29,7 +29,7 @@ class BookAdapter(private val onClick: (Doc) -> Unit) : PagingDataAdapter<Doc, B
 
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
         val book = getItem(position)
-        book?.let { holder.bind(it) } // Handle null check
+        book?.let { holder.bind(it) }
     }
 
     inner class BookViewHolder(private val binding: BookItemBinding) : RecyclerView.ViewHolder(binding.root) {

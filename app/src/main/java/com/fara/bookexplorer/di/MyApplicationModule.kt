@@ -1,8 +1,10 @@
 package com.fara.bookexplorer.di
 
+import android.app.Application
 import android.content.Context
 import com.fara.bookexplorer.data.services.BookService
 import com.fara.bookexplorer.presentation.activities.MyApplication
+import com.fara.bookexpolorer.R
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,9 +32,9 @@ class MyApplicationModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit {
+    fun provideRetrofit(@ApplicationContext context: Context): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://openlibrary.org/")
+            .baseUrl(context.getString(R.string.base_url))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

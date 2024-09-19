@@ -16,14 +16,11 @@
         android:background="@color/grey"
         android:padding="8dp">
 
-        <!-- Book Title -->
-
-        <!-- Book Author -->
         <TextView
             android:id="@+id/bookTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title:"
+            tools:text="Title:"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bookCoverImage" />
@@ -33,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Author:"
+            tools:text="Author:"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bookTitle" />
 
@@ -42,9 +39,10 @@
             android:id="@+id/bookYear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Year:"
+            tools:text="Year:"
             android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bookAuthor" />
 
         <!-- Book Language -->
@@ -52,9 +50,10 @@
             android:id="@+id/bookLanguage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Language:"
+            tools:text="Language:"
             android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bookYear" />
 
         <!-- Book Last Modified -->
@@ -62,9 +61,10 @@
             android:id="@+id/bookLastModified"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Last Modified:"
+            tools:text="Last Modified:"
             android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bookLanguage" />
 
         <!-- Book Cover Image -->
@@ -73,8 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             app:layout_constraintDimensionRatio="16:9"
-            android:background="@color/black"
-            android:contentDescription="Book Cover Image"
+            android:contentDescription="@string/book_cover_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

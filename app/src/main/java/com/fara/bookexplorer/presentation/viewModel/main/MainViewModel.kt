@@ -26,16 +26,16 @@ class MainViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<MainUIState>(MainUIState.Idle)
     val uiState: StateFlow<MainUIState> = _uiState
 
-    private val _searchQuery = MutableStateFlow<String>("")
+    private val _searchQuery = MutableStateFlow("")
 
 
     init {
-        // Process debounced search query changes
+
         viewModelScope.launch {
             _searchQuery
-                .debounce(750) // Wait for 500ms after the last change
-                .filter { it.length > 3 } // Only search if the query has more than 3 characters
-                .distinctUntilChanged() // Avoid processing the same query again
+                .debounce(LIMIT_TIME)
+                .filter { it.length > LIMIT_CHAR }
+                .distinctUntilChanged()
                 .collect { query ->
                     processIntent(MainIntent.Search(query))
                 }
@@ -64,8 +64,14 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    // Handle pagination (load more)
+
     private fun handleLoadMore() {
         // Paging 3, loading more data is handled automatically by the library
+    }
+
+    companion object {
+        const val LIMIT_TIME = 750L
+        const val LIMIT_CHAR = 3
+
     }
 }

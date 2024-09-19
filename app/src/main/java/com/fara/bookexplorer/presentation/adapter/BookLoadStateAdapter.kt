@@ -8,18 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import com.fara.bookexpolorer.databinding.LoadStateItemBinding
 
-class BookLoadStateAdapter(private val retry: () -> Unit) : LoadStateAdapter<BookLoadStateAdapter.LoadStateViewHolder>() {
+class BookLoadStateAdapter(private val retry: () -> Unit) :
+    LoadStateAdapter<BookLoadStateAdapter.LoadStateViewHolder>() {
 
     override fun onBindViewHolder(holder: LoadStateViewHolder, loadState: LoadState) {
         holder.bind(loadState)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): LoadStateViewHolder {
-        val binding = LoadStateItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            LoadStateItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return LoadStateViewHolder(binding)
     }
 
-    inner class LoadStateViewHolder(private val binding: LoadStateItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class LoadStateViewHolder(private val binding: LoadStateItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(loadState: LoadState) {
             if (loadState is LoadState.Loading) {
@@ -27,7 +30,7 @@ class BookLoadStateAdapter(private val retry: () -> Unit) : LoadStateAdapter<Boo
                 binding.errorMsg.visibility = View.GONE
                 binding.retryButton.visibility = View.GONE
                 // Set loading text
-                binding.loadingText.text = "Please wait..."
+                binding.loadingText.text = WAIT
             } else {
                 binding.progressBar.visibility = View.GONE
                 if (loadState is LoadState.Error) {
@@ -41,6 +44,10 @@ class BookLoadStateAdapter(private val retry: () -> Unit) : LoadStateAdapter<Boo
             }
             binding.retryButton.setOnClickListener { retry() }
         }
+    }
+
+    companion object {
+        const val WAIT = "Please wait..."
     }
 }
 

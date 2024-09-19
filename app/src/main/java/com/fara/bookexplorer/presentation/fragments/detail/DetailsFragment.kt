@@ -28,15 +28,15 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.let {
-            book = it.getParcelable(ARG_BOOK)
-        }
+        initView()
 
-        viewModel = ViewModelProvider(this)[DetailViewModel::class.java]
+        handleItemsAndObserve()
 
 
+    }
+
+    private fun handleItemsAndObserve() {
         viewModel.processIntent(DetailIntent.LoadBookDetails, book)
-
 
         lifecycleScope.launchWhenStarted {
             viewModel.uiState.collect { state ->
@@ -48,6 +48,15 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>() {
         }
     }
 
+    private fun initView() {
+        arguments?.let {
+            book = it.getParcelable(ARG_BOOK)
+        }
+
+        viewModel = ViewModelProvider(this)[DetailViewModel::class.java]
+
+    }
+
     override fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -56,24 +65,18 @@ class DetailsFragment : BaseFragment<FragmentDetailsBinding>() {
     }
 
     private fun showBookDetails(book: Doc) {
-        Log.e("eee", "showBookDetails: ${book.getCoverImageUrl()}" )
-        binding.bookTitle.text = "Title: ${book.title}"
-        binding.bookAuthor.text = "Author: ${book.authorName.joinToString(", ")}"
-        binding.bookYear.text = "Year: ${book.getFirstPublishYearV2()}"
-        binding.bookLanguage.text = "Language: ${book.language.firstOrNull() ?: "Unknown"}"
-        binding.bookLastModified.text = "Last Modified: ${book.lastModifiedI}"
+        binding.bookTitle.text = getString(R.string.title, book.title)
+        binding.bookAuthor.text = getString(R.string.author, book.authorName.joinToString(", "))
+        binding.bookYear.text = getString(R.string.year, book.getFirstPublishYearV2())
+        binding.bookLanguage.text =
+            getString(R.string.language, book.language.firstOrNull() ?: "Unknown")
+        binding.bookLastModified.text = getString(R.string.last_modified, book.lastModifiedI.toString())
 
 
-        val coverId = book.coverID
-        if (coverId != null) {
 
-            binding.bookCoverImage.load(book.getCoverImageUrl()) {
-                placeholder(R.drawable.ic_launcher_foreground)
-                error(R.drawable.ic_launcher_foreground)
-            }
-        } else {
-            // Handle if no image is available
-            binding.bookCoverImage.setImageResource(R.drawable.ic_launcher_foreground)
+        binding.bookCoverImage.load(book.getCoverImageUrl()) {
+            placeholder(R.drawable.placeholder)
+            error(R.drawable.error)
         }
     }
 

@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 object AppModules {
 
-//add your dependencies here
+
 @Provides
 fun provideMediaRepository(bookService: BookService): BookRepository = BookRepository(bookService)
 }

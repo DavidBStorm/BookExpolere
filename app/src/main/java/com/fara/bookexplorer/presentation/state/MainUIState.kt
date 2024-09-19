@@ -7,7 +7,7 @@ sealed class MainUIState {
     object Loading : MainUIState()
     data class Success(val books: PagingData<Doc>) : MainUIState()
     data class Error(val message: String) : MainUIState()
-    object Idle : MainUIState() // Optional: Initial state
+    object Idle : MainUIState()
 }
 
 sealed class MainIntent {

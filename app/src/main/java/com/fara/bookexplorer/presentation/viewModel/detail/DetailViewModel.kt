@@ -17,7 +17,7 @@ class DetailViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-        private val _uiState = MutableStateFlow<DetailState>(DetailState.Error("No data"))
+        private val _uiState = MutableStateFlow<DetailState>(DetailState.Error(NO_DATA))
         val uiState: StateFlow<DetailState> = _uiState
 
         fun processIntent(intent: DetailIntent, book: Doc?) {
@@ -26,11 +26,16 @@ class DetailViewModel @Inject constructor(
                     if (book != null) {
                         _uiState.value = DetailState.ShowBookDetails(book)
                     } else {
-                        _uiState.value = DetailState.Error("Book details not found")
+                        _uiState.value = DetailState.Error(ERROR_EVENT)
                     }
                 }
             }
         }
+
+    companion object{
+        const val ERROR_EVENT ="Book details not found"
+        const val NO_DATA ="No data"
+    }
 }
 
 
