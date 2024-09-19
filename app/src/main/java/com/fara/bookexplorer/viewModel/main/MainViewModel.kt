@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val searchBooksUseCase: SearchBooksUseCase
@@ -26,14 +28,24 @@ class MainViewModel @Inject constructor(
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
 
+    // Pagination state
+    private var currentPage = 1
+    internal var isLastPage = false
+    internal var isLoading = false
+
     init {
-        // Collect search queries with a debounce
+        // Collect search queries with debounce
         viewModelScope.launch {
             _searchQuery
                 .debounce(500) // Wait 500ms after the last input
                 .collect { query ->
                     if (query.isNotEmpty()) {
-                        searchBooks(query) // Handle the business logic through use case
+                        currentPage = 1
+                        isLastPage = false
+                        searchBooks(
+                            query,
+                            currentPage
+                        ) // Handle the business logic through use case
                     }
                 }
         }
@@ -45,13 +57,46 @@ class MainViewModel @Inject constructor(
     }
 
     // Handle book search and state emission
-    private suspend fun searchBooks(query: String) {
-        _uiState.value = MainUIState.Loading // Emit loading state
-        try {
-            val books = searchBooksUseCase(query)
-            _uiState.value = MainUIState.Success(books) // Emit success state
-        } catch (e: Exception) {
-            _uiState.value = MainUIState.Error(e.message ?: "Unknown Error") // Emit error state
+    private fun searchBooks(query: String, page: Int) {
+        if (isLoading || isLastPage) return
+
+        viewModelScope.launch {
+            _uiState.value = MainUIState.Loading // Emit loading state
+            isLoading = true
+
+            try {
+                val newBooks = searchBooksUseCase.invoke(query, page)
+                isLoading = false
+
+                val newDocs = newBooks?.docs.orEmpty()
+                if (newDocs.isEmpty()) {
+                    isLastPage = true
+                }
+
+                _uiState.value = if (page == 1) {
+                    // For the first page, simply set the new results
+                    MainUIState.Success(newBooks)
+                } else {
+                    // For subsequent pages, append new results to existing results
+                    val currentBooks =
+                        (_uiState.value as? MainUIState.Success)?.books ?: BookResponse()
+                    val updatedDocs = currentBooks.docs + newDocs
+                    val updatedBooks = currentBooks.copy(docs = updatedDocs)
+                    MainUIState.Success(updatedBooks)
+                }
+
+                currentPage++
+            } catch (e: Exception) {
+                _uiState.value = MainUIState.Error(e.message ?: "Unknown Error") // Emit error state
+            }
+        }
+    }
+
+
+    // Method to load more books (for pagination)
+    fun loadMoreBooks() {
+        if (!isLoading && !isLastPage) {
+            searchBooks(_searchQuery.value, currentPage)
         }
     }
 }

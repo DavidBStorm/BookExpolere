@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class BookResponse(
     @SerializedName("docs")
-    val docs: List<Doc> = listOf(),
+    var docs: List<Doc> = listOf(),
     @SerializedName("numFound")
     val numFound: Int = 0,
     @SerializedName("numFoundExact")

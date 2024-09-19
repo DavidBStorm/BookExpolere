@@ -7,7 +7,7 @@ import javax.inject.Inject
 class SearchBooksUseCase @Inject constructor(
     private val bookRepository: BookRepository
 ) {
-    suspend operator fun invoke(query: String): BookResponse? {
-        return bookRepository.searchBooks(query)
+    suspend operator fun invoke(query: String,page:Int): BookResponse? {
+        return bookRepository.searchBooks(query,page)
     }
 }
