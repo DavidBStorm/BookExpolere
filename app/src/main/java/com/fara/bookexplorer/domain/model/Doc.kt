@@ -62,7 +62,9 @@ data class Doc(
     @SerializedName("type")
     val type: String = "",
     @SerializedName("_version_")
-    val version: Long = 0
+    val version: Long = 0,
+    @SerializedName("cover_i")
+    val coverID: Int = 0
 ) : Parcelable {
     fun getFirstLanguage(): String = language.firstOrNull() ?: ""
 
@@ -74,4 +76,13 @@ data class Doc(
 
     // Get the first publish year or return a default value if the list is empty
     fun getFirstPublishYearV2(): String = firstPublishYear.toString()
+
+    // Method to get the image URL from OpenLibrary based on the coverID
+    fun getCoverImageUrl(): String {
+        return if (coverID > 0) {
+            "https://covers.openlibrary.org/b/id/$coverID-L.jpg"
+        } else {
+            "" // Return an empty string if no coverID is available
+        }
+    }
 }

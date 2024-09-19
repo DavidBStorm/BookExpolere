@@ -1,9 +1,11 @@
 package com.fara.bookexplorer.ui.fragments.main
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
@@ -38,7 +40,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+
 
         initView()
         observeItems()
@@ -95,8 +97,19 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         bookAdapter = BookAdapter { book ->
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, DetailsFragment.newInstance(book)) // Replace with your fragment container ID
+                .replace(R.id.fragment_container, DetailsFragment.newInstance(book))
+                .addToBackStack(DetailsFragment::class.java.name)
                 .commit()
+        }
+        binding.searchView.apply {
+
+            setOnClickListener {
+                this.isIconified = false
+                this.requestFocus()
+                val imm =
+                    context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                imm?.showSoftInput(this.findFocus(), InputMethodManager.SHOW_IMPLICIT)
+            }
         }
 
         binding.recyclerView.apply {
@@ -106,7 +119,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             )
         }
 
-        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+        binding.searchView.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { viewModel.processIntent(MainIntent.Search(it)) }
                 return false
@@ -114,7 +128,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
 //                newText?.let { viewModel.processIntent(MainIntent.Search(it)) }
-                updateEmptyQueryMessage(newText?:"")
+                updateEmptyQueryMessage(newText ?: "")
                 return true
             }
         })
